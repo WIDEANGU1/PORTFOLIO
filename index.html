@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omotayo Obikoya | Media Architect</title>
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --primary-dark: #121212;
+            --secondary-dark: #1e1e1e;
+            --accent-gold: #c5a059; 
+            --text-light: #e0e0e0;
+            --text-muted: #888;
+            --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-main);
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+        input, textarea, button { font-family: inherit; }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 5%;
+            background-color: rgba(18, 18, 18, 0.95);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #333;
+        }
+
+        .logo { font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; }
+        .logo span { color: var(--accent-gold); }
+
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+        .nav-links a:hover { color: var(--text-light); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5%;
+            /* Ensure 'tayo-hero.jpg' is in the folder */
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('tayo-hero.jpg'); 
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+        }
+
+        .hero-content { max-width: 900px; animation: fadeIn 1.5s ease-in; }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 25px;
+            line-height: 1.3;
+            font-weight: 300;
+        }
+
+        .hero h1 strong { font-weight: 700; color: #fff; }
+        
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* --- PHILOSOPHY SECTION --- */
+        .philosophy {
+            padding: 80px 10%;
+            background-color: var(--primary-dark);
+            border-bottom: 1px solid #333;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .phil-title { flex: 1; min-width: 300px; margin-bottom: 30px; }
+        .phil-title h2 { font-size: 2.5rem; color: var(--accent-gold); line-height: 1.2; }
+        
+        .phil-list { flex: 1.5; min-width: 300px; }
+        .phil-list li {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            border-left: 2px solid var(--accent-gold);
+            padding-left: 20px;
+            color: var(--text-light);
+        }
+
+        /* --- SELECTED NARRATIVES (PROJECT FOLDER) --- */
+        .projects { padding: 100px 5%; background-color: var(--secondary-dark); }
+        .section-header { margin-bottom: 60px; text-align: left; }
+        .section-header h2 { font-size: 2rem; letter-spacing: 1px; text-transform: uppercase; color: #fff; }
+        .section-header p { color: var(--text-muted); margin-top: 10px; }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background-color: #000;
+            border: 1px solid #333;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .project-card:hover { transform: translateY(-5px); border-color: var(--accent-gold); }
+
+        .project-thumb {
+            height: 220px;
+            width: 100%;
+            background-color: #333; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .project-thumb img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s; }
+        .project-card:hover .project-thumb img { opacity: 1; }
+
+        .project-info { padding: 25px; }
+        .project-cat { color: var(--accent-gold); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+        .project-title { font-size: 1.2rem; margin: 10px 0; color: #fff; }
+        .project-client { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* --- THE ECOSYSTEM --- */
+        .ecosystem { padding: 100px 5%; background-color: var(--primary-dark); }
+        
+        .eco-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 80px;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            padding-bottom: 80px;
+        }
+        .eco-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+        .eco-text { flex: 1; min-width: 300px; padding-right: 50px; }
+        .eco-img { flex: 1; min-width: 300px; }
+        .eco-img img { width: 100%; border-radius: 4px; filter: grayscale(30%); }
+
+        .brand-name { font-size: 1.8rem; margin-bottom: 15px; display: inline-block; border-bottom: 2px solid var(--accent-gold); padding-bottom: 5px; }
+        .tagline { font-style: italic; color: var(--text-muted); margin-bottom: 20px; display: block; }
+        
+        .btn-link { 
+            color: var(--accent-gold); 
+            text-transform: uppercase; 
+            font-size: 0.9rem; 
+            letter-spacing: 1px; 
+            border: 1px solid var(--accent-gold);
+            padding: 10px 20px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .btn-link:hover { background: var(--accent-gold); color: #000; }
+
+        /* --- RECRUITMENT FORM --- */
+        .recruitment { padding: 100px 5%; background-color: #161616; border-top: 1px solid #333; }
+        .form-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: #0e0e0e;
+            padding: 50px;
+            border: 1px solid #333;
+            border-radius: 5px;
+        }
+
+        .form-header { text-align: center; margin-bottom: 40px; }
+        .form-header h3 { font-size: 2rem; margin-bottom: 10px; }
+        .form-header p { color: var(--text-muted); }
+
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; margin-bottom: 10px; color: var(--text-light); font-size: 0.9rem; }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            color: #fff;
+            border-radius: 3px;
+        }
+        .form-control:focus { outline: none; border-color: var(--accent-gold); }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--accent-gold);
+            color: #000;
+            border: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-submit:hover { background-color: #fff; }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 60px 5%;
+            background-color: #000;
+            text-align: center;
+            border-top: 1px solid #333;
+        }
+        
+        .footer-socials { margin-top: 30px; display: flex; justify-content: center; gap: 30px; }
+        .footer-socials a { color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+        .footer-socials a:hover { color: var(--accent-gold); }
+
+        .quote { font-size: 1.5rem; font-weight: 300; margin-bottom: 30px; color: #fff; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            .nav-links { display: none; } 
+            .philosophy { flex-direction: column; }
+            .eco-row { flex-direction: column-reverse; }
+            .eco-text { padding-right: 0; margin-bottom: 30px; }
+            .project-grid { grid-template-columns: 1fr; }
+            .form-container { padding: 25px; }
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">OMOTAYO<span>.</span></div>
+        <div class="nav-links">
+            <a href="#philosophy">Philosophy</a>
+            <a href="#projects">Selected Works</a>
+            <a href="#ecosystem">Ventures</a>
+            <a href="#recruit">Join Sleek Apple</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <p>The Media Architect</p>
+            <h1>"I am less interested in moments,<br>and more interested in <strong>trajectories</strong>."</h1>
+        </div>
+    </header>
+
+    <section id="philosophy" class="philosophy">
+        <div class="phil-title">
+            <h2>How I<br>Think.</h2>
+        </div>
+        <ul class="phil-list">
+            <li>Clarity is more powerful than creativity.</li>
+            <li>Structure outlives talent.</li>
+            <li>Premium brands move slowly because they are building foundations.</li>
+        </ul>
+    </section>
+
+    <section id="projects" class="projects">
+        <div class="section-header">
+            <h2>Selected Narratives</h2>
+            <p>A collection of corporate documentaries and visual foundations.</p>
+        </div>
+
+        <div class="project-grid">
+            <div class="project-card">
+                <div class="project-thumb">
+                    <img src="https://via.placeholder.com/400x250/111/555?text=Corporate+Documentary" alt="Project 1">
+                </div>
+                <div class="project-info">
+                    <span class="project-cat">Documentary</span>
+                    <h3 class="project-title">The Legacy Infrastructure</h3>
+                    <p class="project-client">Client: FirstBank Group</p>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-thumb">
+                    <img src="https://via.placeholder.com/400x250/111/555?text=Brand+Film" alt="Project 2">
+                </div>
+                <div class="project-info">
+                    <span class="project-cat">Brand Film</span>
+                    <h3 class="project-title">Future Forward</h3>
+                    <p class="project-client">Client: TechPoint Africa</p>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-thumb">
+                    <img src="https://via.placeholder.com/400x250/111/555?text=Visual+Essay" alt="Project 3">
+                </div>
+                <div class="project-info">
+                    <span class="project-cat">Visual Essay</span>
+                    <h3 class="project-title">Sustainable Growth</h3>
+                    <p class="project-client">Client: Lagos State Gov</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="ecosystem" class="ecosystem">
+        <div class="section-header">
+            <h2>The Ecosystem</h2>
+        </div>
+
+        <div class="eco-row">
+            <div class="eco-text">
+                <h3 class="brand-name">Wide-Angu</h3>
+                <span class="tagline">The Media Aggregator</span>
+                <p>Identifying a gap in a fragmented market, Wide-Angu is the infrastructure that connects talent to demand. We are building the bridge for lighting, editing, and production professionals.</p>
+                <a href="#" class="btn-link">View Platform</a>
+            </div>
+            <div class="eco-img">
+                <img src="wide-angu.jpg" alt="Building Wide-Angu">
+            </div>
+        </div>
+
+        <div class="eco-row">
+            <div class="eco-text">
+                <h3 class="brand-name">Sleek Apple</h3>
+                <span class="tagline">Premium Production & Talent Pipeline</span>
+                <p>We build documentaries and visual narratives for founders and institutions. But beyond production, we build people. We train and deploy elite media professionals.</p>
+            </div>
+            <div class="eco-img">
+                <img src="sleek-apple.jpg" alt="Sleek Apple Production">
+            </div>
+        </div>
+    </section>
+
+    <section id="recruit" class="recruitment">
+        <div class="form-container">
+            <div class="form-header">
+                <h3>Join The Cohort</h3>
+                <p>Sleek Apple recruits and trains the top 1% of media enthusiasts. <br>Show us you have the trajectory.</p>
+            </div>
+            
+            <form action="mailto:omotayoobikoya@gmail.com" method="post" enctype="text/plain">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" name="name" class="form-control" required placeholder="Omotayo Obikoya">
+                </div>
+                
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" name="email" class="form-control" required placeholder="you@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label>Primary Discipline</label>
+                    <select name="discipline" class="form-control">
+                        <option>Cinematography</option>
+                        <option>Video Editing / Post-Production</option>
+                        <option>Photography</option>
+                        <option>Lighting / Set Design</option>
+                        <option>Scriptwriting</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Portfolio Link (Optional)</label>
+                    <input type="url" name="portfolio" class="form-control" placeholder="Behance / Drive / Instagram">
+                </div>
+
+                <div class="form-group">
+                    <label>Why do you want to join Sleek Apple?</label>
+                    <textarea rows="4" name="message" class="form-control" required placeholder="Tell us about your trajectory..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">Apply for Training</button>
+            </form>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <p class="quote">"Good stories attract attention.<br>Great stories attract investment."</p>
+        
+        <div style="margin-top: 40px;">
+            <a href="mailto:omotayoobikoya@gmail.com" class="btn-link">Start a Conversation</a>
+        </div>
+
+        <div class="footer-socials">
+            <a href="https://www.linkedin.com/in/tayoobikoya/" target="_blank">LinkedIn</a>
+            <a href="https://x.com/tayoobikoya1" target="_blank">Twitter / X</a>
+            <a href="https://www.instagram.com/tayoobikoya" target="_blank">Instagram</a>
+        </div>
+
+        <p style="margin-top: 60px; font-size: 0.8rem; color: #444;">&copy; 2025 Omotayo Obikoya.</p>
+    </footer>
+
+</body>
+</html>
